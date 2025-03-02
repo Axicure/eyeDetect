@@ -1,0 +1,14 @@
+{
+  "cataract": ["C"],
+  "non proliferative retinopathy": ["D"],
+  "laser spot": ["O"],
+  "macular epiretinal membrane": ["O"],
+  "drusen": ["A"],
+  "retinal artery occlusion": ["O"],
+  "normal fundus": ["N"],
+  "glaucoma": ["G"],
+  "amd": ["A"],
+  "hypertensive retinopathy": ["H"],
+  "myopia": ["M"],
+  "_default": ["O"]
+}
