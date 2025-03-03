@@ -12,16 +12,29 @@ def load_label_mapping():
         return json.load(f)
 
 
-def preprocess_and_save(img_path):
+def preprocess_and_save(img_path, target_size=(299, 299)):
     """图像预处理并保存新文件"""
     # 读取原始图片
     raw_img = cv2.imread(os.path.join(DATA_DIR, 'raw_images', img_path))
     if raw_img is None:
         raise FileNotFoundError(f"图片不存在: {img_path}")
 
-    # 预处理流程
-    img = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
-    img = cv2.resize(img, (299, 299))
+    # 获取原始尺寸
+    h, w = raw_img.shape[:2]
+
+    # 计算正方形裁剪区域
+    crop_size = min(h, w)
+    start_x = (w - crop_size) // 2
+    start_y = (h - crop_size) // 2
+    cropped_img = raw_img[start_y:start_y + crop_size, start_x:start_x + crop_size]
+
+    # 调整大小
+    resized_img = cv2.resize(cropped_img, target_size)
+
+    # 转换到灰度图进行直方图均衡化（亮度均衡）
+    yuv = cv2.cvtColor(resized_img, cv2.COLOR_BGR2YUV)
+    yuv[:, :, 0] = cv2.equalizeHist(yuv[:, :, 0])  # 仅对 Y 通道均衡化
+    equalized_img = cv2.cvtColor(yuv, cv2.COLOR_YUV2BGR)
 
     # 生成新文件名
     base_name = os.path.splitext(img_path)[0]
@@ -29,7 +42,8 @@ def preprocess_and_save(img_path):
     output_path = os.path.join(PROCESSED_IMG_DIR, new_filename)
 
     # 保存处理后的图片
-    cv2.imwrite(output_path, cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
+    cv2.imwrite(output_path, equalized_img)
+
     return new_filename
 
 
