@@ -11,7 +11,7 @@ MODEL_CONFIG = {
     'pretrained_weights': 'imagenet',
     'trainable_layers': 250,
     'num_classes': 8,
-    'class_names': ['N', 'D', 'G', 'C', 'A', 'H', 'M', 'O']
+    'class_names': ['N', 'D', 'G', 'C', 'A', 'H', 'M', 'O']  # 确保顺序正确
 }
 
 # 训练参数
@@ -19,20 +19,10 @@ TRAIN_CONFIG = {
     'batch_size': 32,
     'epochs': 50,
     'learning_rate': 1e-4,
-    'validation_split': 0.2,
-    'class_weights': {
-        0: 1.0,  # N
-        1: 2.5,  # D
-        2: 3.0,  # G
-        3: 2.0,  # C
-        4: 2.5,  # A
-        5: 3.0,  # H
-        6: 1.5,  # M
-        7: 1.8   # O
-    }
+    'validation_split': 0.2  # 删除 class_weights
 }
 
-# 推理参数
+# 推理参数（无需修改）
 INFERENCE_CONFIG = {
     'confidence_threshold': 0.65,
     'intermediate_output_dir': os.path.join(BASE_DIR, 'inference_pipeline/intermediate_outputs')
