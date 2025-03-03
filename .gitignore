@@ -1,0 +1,6 @@
+/data/raw_images/*.jpg
+/data/processed_images/*.jpg
+/data/data.zip
+/data/processed_metadata.csv
+/data/Traning_Dataset.xlsx
+/src/best_model.h5
